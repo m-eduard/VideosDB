@@ -1,5 +1,6 @@
 package main;
 
+import action.ActionCenter;
 import checker.Checkstyle;
 import checker.Checker;
 import common.Constants;
@@ -7,6 +8,7 @@ import fileio.Input;
 import fileio.InputLoader;
 import fileio.Writer;
 import org.json.simple.JSONArray;
+import repository.Repository;
 
 import java.io.File;
 import java.io.IOException;
@@ -71,6 +73,9 @@ public final class Main {
         JSONArray arrayResult = new JSONArray();
 
         //TODO add here the entry point to your implementation
+        Repository repo = Repository.getInstance(input);
+        ActionCenter actions = new ActionCenter(input.getCommands());
+        actions.apply(fileWriter, arrayResult);
 
         fileWriter.closeJSON(arrayResult);
     }
