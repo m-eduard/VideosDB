@@ -66,10 +66,15 @@ public class Repository {
         return instance;
     }
 
-    public static Repository getInstance(Input input) {
-        if (instance == null) {
-            instance = new Repository(input);
-        }
+    /**
+     * Method that loads the new input into a Repository instance,
+     * which is unique during the execution of the commands on a
+     * single input file (aka test).
+     * @param input input data
+     * @return instance of the repository
+     */
+    public static Repository load(Input input) {
+        instance = new Repository(input);
 
         return instance;
     }

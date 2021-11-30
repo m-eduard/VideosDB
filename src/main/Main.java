@@ -73,7 +73,7 @@ public final class Main {
         JSONArray arrayResult = new JSONArray();
 
         //TODO add here the entry point to your implementation
-        Repository repo = Repository.getInstance(input);
+        Repository repo = Repository.load(input);
         ActionCenter actions = new ActionCenter(input.getCommands());
         actions.apply(fileWriter, arrayResult);
 

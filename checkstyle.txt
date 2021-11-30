@@ -32,14 +32,13 @@ Starting audit...
 [ERROR] H:\acs cti 321CA\POO\VideosDBFinal\.\src\repository\Repository.java:17:1: Class Repository should be declared as final. [FinalClass]
 [ERROR] H:\acs cti 321CA\POO\VideosDBFinal\.\src\repository\Repository.java:37:24: Parameter input should be final. [FinalParameters]
 [ERROR] H:\acs cti 321CA\POO\VideosDBFinal\.\src\repository\Repository.java:61:5: Missing a Javadoc comment. [MissingJavadocMethod]
-[ERROR] H:\acs cti 321CA\POO\VideosDBFinal\.\src\repository\Repository.java:69:5: Missing a Javadoc comment. [MissingJavadocMethod]
-[ERROR] H:\acs cti 321CA\POO\VideosDBFinal\.\src\repository\Repository.java:69:42: Parameter input should be final. [FinalParameters]
-[ERROR] H:\acs cti 321CA\POO\VideosDBFinal\.\src\repository\Repository.java:77:5: Missing a Javadoc comment. [MissingJavadocMethod]
+[ERROR] H:\acs cti 321CA\POO\VideosDBFinal\.\src\repository\Repository.java:76:35: Parameter input should be final. [FinalParameters]
 [ERROR] H:\acs cti 321CA\POO\VideosDBFinal\.\src\repository\Repository.java:82:5: Missing a Javadoc comment. [MissingJavadocMethod]
+[ERROR] H:\acs cti 321CA\POO\VideosDBFinal\.\src\repository\Repository.java:87:5: Missing a Javadoc comment. [MissingJavadocMethod]
 [ERROR] H:\acs cti 321CA\POO\VideosDBFinal\.\src\user\User.java:31:5: Class 'User' looks like designed for extension (can be subclassed), but the method 'getUsername' does not have javadoc that explains how to do that safely. If class is not designed for extension consider making the class 'User' final or making the method 'getUsername' static/final/abstract/empty, or adding allowed annotation for the method. [DesignForExtension]
 [ERROR] H:\acs cti 321CA\POO\VideosDBFinal\.\src\user\User.java:35:5: Class 'User' looks like designed for extension (can be subclassed), but the method 'getHistory' does not have javadoc that explains how to do that safely. If class is not designed for extension consider making the class 'User' final or making the method 'getHistory' static/final/abstract/empty, or adding allowed annotation for the method. [DesignForExtension]
 [ERROR] H:\acs cti 321CA\POO\VideosDBFinal\.\src\user\User.java:39:5: Class 'User' looks like designed for extension (can be subclassed), but the method 'getSubscriptionType' does not have javadoc that explains how to do that safely. If class is not designed for extension consider making the class 'User' final or making the method 'getSubscriptionType' static/final/abstract/empty, or adding allowed annotation for the method. [DesignForExtension]
 [ERROR] H:\acs cti 321CA\POO\VideosDBFinal\.\src\user\User.java:43:5: Class 'User' looks like designed for extension (can be subclassed), but the method 'getFavoriteMovies' does not have javadoc that explains how to do that safely. If class is not designed for extension consider making the class 'User' final or making the method 'getFavoriteMovies' static/final/abstract/empty, or adding allowed annotation for the method. [DesignForExtension]
 [ERROR] H:\acs cti 321CA\POO\VideosDBFinal\.\src\user\User.java:47:5: Class 'User' looks like designed for extension (can be subclassed), but the method 'getRated' does not have javadoc that explains how to do that safely. If class is not designed for extension consider making the class 'User' final or making the method 'getRated' static/final/abstract/empty, or adding allowed annotation for the method. [DesignForExtension]
 Audit done.
-Checkstyle ends with 42 errors.
+Checkstyle ends with 41 errors.
