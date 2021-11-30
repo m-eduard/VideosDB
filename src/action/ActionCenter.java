@@ -27,7 +27,8 @@ public class ActionCenter {
 
         for (ActionInputData action : commandsData) {
             Action temp = switch(action.getActionType()) {
-                case Constants.COMMAND -> new Command(action.getActionId(), action.getUsername(), action.getType());
+                case Constants.COMMAND -> new Command(action.getActionId(), action.getUsername(), action.getTitle(),
+                                                        action.getSeasonNumber(), action.getType(), action.getGrade());
                 case Constants.QUERY -> new Query(action.getActionId());
                 case Constants.RECOMMENDATION -> new Recommendation(action.getActionId());
                 default -> null;
