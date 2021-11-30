@@ -5,6 +5,8 @@ import common.Constants;
 import entertainment.Genre;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import repository.Repository;
+import user.User;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -122,5 +124,31 @@ public final class Utils {
         }
 
         return mapVideos;
+    }
+
+    /**
+     * Finds how many favorite lists contain a show/movie.
+     */
+    public static int favoriteApparitions(String videoTitle) {
+        Repository repo = Repository.getInstance();
+        return (int) repo.getUsers().stream().
+                filter(y -> y.getFavoriteMovies().contains(videoTitle)).count();
+    }
+
+    /**
+     * Get the total number of views for a video.
+     */
+    public static int viewsOfAVideo(String videoTitle) {
+        Repository repo = Repository.getInstance();
+        return repo.getUsers().stream().map(x -> x.getHistory()
+                .getOrDefault(videoTitle, 0)).reduce(0, Integer::sum);
+    }
+
+    /**
+     * Get the number of reviews provided by a user
+     */
+    public static int ratingsOfAUser(User user) {
+        return user.getRated().keySet().stream().map(x -> user.getRated().get(x).size())
+                .reduce(0, Integer::sum);
     }
 }

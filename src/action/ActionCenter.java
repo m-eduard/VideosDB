@@ -31,7 +31,8 @@ public class ActionCenter {
                                                         action.getSeasonNumber(), action.getType(), action.getGrade());
                 case Constants.QUERY -> new Query(action.getActionId(), action.getObjectType(), action.getNumber(),
                                                     action.getFilters(), action.getSortType(), action.getCriteria());
-                case Constants.RECOMMENDATION -> new Recommendation(action.getActionId());
+                case Constants.RECOMMENDATION -> new Recommendation(action.getActionId(), action.getUsername(),
+                                                    action.getType(), action.getGenre());
                 default -> null;
             };
 
