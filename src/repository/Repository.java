@@ -80,19 +80,35 @@ public class Repository {
     }
 
     public User findUser(final String username) {
-        return getInstance().users.stream().filter(a -> a.getUsername().equals(username))
+        return getInstance().users.stream().filter(x -> x.getUsername().equals(username))
                 .findAny().orElse(null);
     }
 
     public Video findVideo(final String title) {
-        Video target = getInstance().movies.stream().filter(a -> a.getTitle().equals(title))
+        Video target = getInstance().movies.stream().filter(x -> x.getTitle().equals(title))
                 .findAny().orElse(null);
 
         if (target == null) {
-            target = getInstance().serials.stream().filter(a -> a.getTitle().equals(title))
+            target = getInstance().serials.stream().filter(x -> x.getTitle().equals(title))
                     .findAny().orElse(null);
         }
 
         return target;
+    }
+
+    public List<Actor> getActors() {
+        return actors;
+    }
+
+    public List<Movie> getMovies() {
+        return movies;
+    }
+
+    public List<Serial> getSerials() {
+        return serials;
+    }
+
+    public List<User> getUsers() {
+        return users;
     }
 }

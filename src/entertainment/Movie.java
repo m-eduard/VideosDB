@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public class Movie extends Video {
     private final int duration;
     private final ArrayList<Double> ratings;
-    private int views;
 
     public Movie(final String title, final ArrayList<String> cast,
                  final ArrayList<String> genres, final int year,
@@ -13,18 +12,19 @@ public class Movie extends Video {
         super(title, year, cast, genres);
         this.duration = duration;
         this.ratings = new ArrayList<>();
-        this.views = 0;
-    }
-
-    public int getDuration() {
-        return duration;
     }
 
     public ArrayList<Double> getRatings() {
         return ratings;
     }
 
-    public int getViews() {
-        return views;
+    @Override
+    public double getAverageRating() {
+        return (ratings.size() == 0) ? 0.0 : ratings.stream().reduce(0.0, (x, y) -> x + y) / ratings.size();
+    }
+
+    @Override
+    public int getDuration() {
+        return duration;
     }
 }

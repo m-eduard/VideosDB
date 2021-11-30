@@ -28,6 +28,10 @@ public final class Season {
         this.ratings = new ArrayList<>();
     }
 
+    public double averageRating() {
+        return (ratings.size() == 0) ? 0.0 : ratings.stream().reduce(0.0, (x, y) -> x + y) / ratings.size();
+    }
+
     public int getDuration() {
         return duration;
     }

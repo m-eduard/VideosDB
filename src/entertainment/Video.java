@@ -16,6 +16,9 @@ public abstract class Video {
         this.genres = genres;
     }
 
+    public abstract double getAverageRating();
+    public abstract int getDuration();
+
     public final String getTitle() {
         return title;
     }

@@ -78,4 +78,14 @@ public final class Constants {
     public static final String FAVORITE = "favorite";
     public static final String VIEW = "view";
     public static final String RATING = "rating";
+    public static final String AVERAGE = "average";
+    public static final String ASC = "asc";
+    public static final String DESC = "desc";
+    public static final int AWARDS_POS = 3;
+    public static final int WORDS_POS = 2;
+    public static final int YEAR_POS = 0;
+    public static final int GENRE_POS = 1;
+    public static final String RATINGS = "ratings";
+    public static final String LONGEST = "longest";
+    public static final String MOST_VIEWED = "most_viewed";
 }
