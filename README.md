@@ -1,9 +1,9 @@
 Marin Eduard-Constantin, 321CA <br />
 November 2021
 
-#VideosDB
+<h1>VideosDB</h1>
 
-##Structure:
+<h2>Structure:</h2>
 
 In order to store the entities in a database, every entity has a custom
 class, and all the entities are gathered in a Repository, which is
@@ -33,7 +33,7 @@ To sort and filter the data, when the operation specifies this, static helper
 methods were defined in the CustomFilter and CustomSort classes. The sorting is
 done by creating new comparators, according to the possible sorting criteria.
 
-##Flow:
+<h2>Flow:</h2>
 Entities that form the database are loaded into memory in a Repository
 type object, and the actions that will be performed on the database are stored
 in an ActionCenter instance, based on their type.<br />
