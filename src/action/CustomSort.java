@@ -32,12 +32,39 @@ public class CustomSort {
             }
         };
 
+        /**
+         * Comparator that keeps the database order, if the
+         * values for the first criteria are equal.
+         */
+        Comparator<Video> ascDbComparator = new Comparator<>() {
+            @Override
+            public int compare(Video o1, Video o2) {
+                return Double.compare(properties.get(o1), properties.get(o2));
+            }
+        };
+
+        Comparator<Video> descDbComparator = new Comparator<>() {
+            @Override
+            public int compare(Video o1, Video o2) {
+                return (-1) * ascDbComparator.compare(o1, o2);
+            }
+        };
+
         switch (sortType) {
             case Constants.ASC -> {
                 videos.sort(ascComparator);
             }
             case Constants.DESC -> {
                 videos.sort(descComparator);
+            }
+            case Constants.DB_ASC -> {
+                videos.sort(ascDbComparator);
+            }
+            case Constants.DB_DESC -> {
+                videos.sort(descDbComparator);
+            }
+            default -> {
+                ;
             }
         }
 

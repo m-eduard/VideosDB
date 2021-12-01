@@ -147,7 +147,7 @@ public class Query extends Action {
     }
 
     /**
-     * Returns the first N videos sorted by their popularity.
+     * Returns the first N videos sorted by their popularity in favorites lists.
      */
     private String favoritesVideos() {
         List<Video> videos = retrieveTargetObjects(objectType).stream()

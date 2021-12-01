@@ -3,6 +3,7 @@ package action;
 import actor.Actor;
 import common.Constants;
 import entertainment.Video;
+import utils.Utils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -29,8 +30,8 @@ public class CustomFilter {
     public static List<Actor> filterActors(List<Actor> actors, List<List<String>> filters) {
         if (filters.get(Constants.AWARDS_POS) != null) {
             actors = actors.stream().filter(x -> {
-                int awards = filters.get(Constants.AWARDS_POS).stream().map(y -> (x.getAwards().containsKey(y)) ? 1 : 0)
-                                .reduce(0, Integer::sum);
+                int awards = filters.get(Constants.AWARDS_POS).stream().map(Utils::stringToAwards)
+                                .map(y -> ((x.getAwards().containsKey(y)) ? 1 : 0)).reduce(0, Integer::sum);
 
                 return awards == filters.get(Constants.AWARDS_POS).size();
             }).collect(Collectors.toList());
@@ -42,7 +43,9 @@ public class CustomFilter {
 
                 String[] descriptionTokens = x.getCareerDescription().split("\\W+");
                 for (String keyword : filters.get(Constants.WORDS_POS)) {
-                    if (!Arrays.asList(descriptionTokens).contains(keyword)) {
+                    if (!Arrays.asList(descriptionTokens).stream().map(y -> y.toLowerCase())
+                            .collect(Collectors.toList()).contains(keyword.toLowerCase()))
+                    {
                         status = false;
                         break;
                     }
