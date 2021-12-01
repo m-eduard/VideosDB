@@ -3,7 +3,7 @@ package actor;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class Actor {
+public final class Actor {
     private String name;
     private String careerDescription;
     private ArrayList<String> filmography;
@@ -44,14 +44,5 @@ public class Actor {
 
     public void setCareerDescription(final String careerDescription) {
         this.careerDescription = careerDescription;
-    }
-
-    @Override
-    public String toString() {
-        return "ActorInputData{"
-                + "name='" + name + '\''
-                + ", careerDescription='"
-                + careerDescription + '\''
-                + ", filmography=" + filmography + '}';
     }
 }

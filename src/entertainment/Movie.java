@@ -2,7 +2,7 @@ package entertainment;
 
 import java.util.ArrayList;
 
-public class Movie extends Video {
+public final class Movie extends Video {
     private final int duration;
     private final ArrayList<Double> ratings;
 
@@ -20,7 +20,8 @@ public class Movie extends Video {
 
     @Override
     public double getAverageRating() {
-        return (ratings.size() == 0) ? 0.0 : ratings.stream().reduce(0.0, (x, y) -> x + y) / ratings.size();
+        return (ratings.size() == 0) ? 0.0 : ratings.stream()
+                .reduce(0.0, (x, y) -> x + y) / ratings.size();
     }
 
     @Override

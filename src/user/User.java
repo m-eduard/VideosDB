@@ -4,15 +4,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class User {
+public final class User {
     private final String username;
     private final String subscriptionType;
     private final Map<String, Integer> history;
     private final ArrayList<String> favoriteMovies;
     /**
-     * Movies / serials rated by the user
-     *
-     * Key is video name, value is a list of rated
+     * Movies / serials rated by the user:
+     * Key is video title, value is a list of rated
      * seasons (for movies, the list contains only
      * an element, whose value is 0).
      */

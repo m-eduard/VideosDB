@@ -75,7 +75,7 @@ public final class Main {
         //TODO add here the entry point to your implementation
         Repository repo = Repository.load(input);
         ActionCenter actions = new ActionCenter(input.getCommands());
-        actions.apply(fileWriter, arrayResult);
+        actions.applyActions(fileWriter, arrayResult);
 
         fileWriter.closeJSON(arrayResult);
     }

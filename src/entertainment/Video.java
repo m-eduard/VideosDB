@@ -16,7 +16,19 @@ public abstract class Video {
         this.genres = genres;
     }
 
+    /**
+     * @return average rating for a video
+     * (average based on the sum of average positive ratings
+     * of seasons, if the video is a serial, average rating,
+     * for movies)
+     */
     public abstract double getAverageRating();
+
+    /**
+     * @return duration of a video
+     * (sum of seasons' length if the video is a serial,
+     *  length, if the video is a movie)
+     */
     public abstract int getDuration();
 
     public final String getTitle() {

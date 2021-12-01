@@ -4,17 +4,22 @@ import actor.Actor;
 import entertainment.Movie;
 import entertainment.Serial;
 import entertainment.Video;
-import fileio.*;
+import fileio.Input;
+import fileio.ActorInputData;
+import fileio.UserInputData;
+import fileio.MovieInputData;
+import fileio.SerialInputData;
+
 import user.User;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Singleton class which stores all the input data in a database that can be changed
- * using various actions.
+ * Singleton class which stores all the input data in
+ * a database that can be changed using various actions.
  */
-public class Repository {
+public final class Repository {
     private List<Actor> actors;
     private List<User> users;
     private List<Movie> movies;
@@ -34,7 +39,7 @@ public class Repository {
      * the input data parsed as Input object.
      * @param input Input object which stores the parsed data.
      */
-    private Repository(Input input) {
+    private Repository(final Input input) {
         this();
 
         for (ActorInputData actor : input.getActors()) {
@@ -58,6 +63,9 @@ public class Repository {
         }
     }
 
+    /**
+     * @return instance of the Database, which is implemented as singleton
+     */
     public static Repository getInstance() {
         if (instance == null) {
             instance = new Repository();
@@ -67,23 +75,38 @@ public class Repository {
     }
 
     /**
-     * Method that loads the new input into a Repository instance,
-     * which is unique during the execution of the commands on a
-     * single input file (aka test).
+     * Method that loads the new input into a Repository
+     * instance, which is unique during the execution of
+     * the commands on a single input file (aka test).
      * @param input input data
      * @return instance of the repository
      */
-    public static Repository load(Input input) {
+    public static Repository load(final Input input) {
         instance = new Repository(input);
-
         return instance;
     }
 
+    /**
+     * Searches for a User object that have the specified username
+     * (every user should have a unique username, so only a User
+     * instance could be found while searching for a username).
+     * @param username target user's username
+     * @return a User instance whose name matched the given username,
+     *         if such a user exist in the database;
+     *         null, otherwise
+     */
     public User findUser(final String username) {
         return getInstance().users.stream().filter(x -> x.getUsername().equals(username))
                 .findAny().orElse(null);
     }
 
+    /**
+     * Searches for a Video object(either Movie, or Serial)
+     * in the database by the provided title.
+     * @param title name of the show
+     * @return Video instance if a video was found;
+     *         null, otherwise
+     */
     public Video findVideo(final String title) {
         Video target = getInstance().movies.stream().filter(x -> x.getTitle().equals(title))
                 .findAny().orElse(null);

@@ -12,23 +12,28 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Recommendation extends Action {
+public final class Recommendation extends Action {
     private final String username;
     private final String type;
     private final String genre;
 
-    public Recommendation(final int actionId, final String username, final String type,
-                          String genre) {
+    public Recommendation(final int actionId, final String username,
+                          final String type, final String genre) {
         super(actionId);
         this.username = username;
         this.type = type;
         this.genre = genre;
     }
 
+    /**
+     * Generate a recommendation whose type is specified by the
+     * class fields, based on the info stored in database.
+     * @return message generated after trying to create a recommendation
+     */
     @Override
     public String apply() {
         return switch (type) {
-            case Constants.STANDARD -> standardRecommendation();
+            case Constants.STANDARD -> standard();
             case Constants.BEST_UNSEEN -> bestUnseen();
             case Constants.POPULAR_GENRE -> popular();
             case Constants.FAVORITE -> favorite();
@@ -40,21 +45,22 @@ public class Recommendation extends Action {
     /**
      * Returns the first video which haven't been seen by the user.
      */
-    private String standardRecommendation() {
+    private String standard() {
         Repository repo = Repository.getInstance();
         User user = repo.findUser(username);
-        if (user == null) return "StandardRecommendation cannot be applied!";
 
-        /**
-         *  Find the first unwatched video for the specified user
-         */
+        if (user == null) {
+            return "StandardRecommendation cannot be applied!";
+        }
+
         List<Video> videos = Stream.concat(repo.getMovies().stream(), repo.getSerials().stream())
-                .collect(Collectors.toList());
-        Video recommendation = videos.stream().filter(x -> !user.getHistory().containsKey(x.getTitle()))
-                                    .findFirst().orElse(null);
+                                .collect(Collectors.toList());
+        Video recommendation = videos.stream()
+                                .filter(x -> !user.getHistory().containsKey(x.getTitle()))
+                                .findFirst().orElse(null);
 
         return (recommendation == null) ? "StandardRecommendation cannot be applied!"
-                : "StandardRecommendation result: " + recommendation.getTitle();
+                    : "StandardRecommendation result: " + recommendation.getTitle();
     }
 
     /**
@@ -63,17 +69,24 @@ public class Recommendation extends Action {
     private String bestUnseen() {
         Repository repo = Repository.getInstance();
         User user = repo.findUser(username);
-        if (user == null) return "BestRatedUnseenRecommendation cannot be applied!";
+
+        if (user == null) {
+            return "BestRatedUnseenRecommendation cannot be applied!";
+        }
 
         /**
-         * Sort the unseen videos by their rating.
+         * Filter only the videos that wasn't watched.
          */
         List<Video> videos = Stream.concat(repo.getMovies().stream(), repo.getSerials().stream())
                                 .collect(Collectors.toList());
         videos = videos.stream().filter(x -> !user.getHistory().containsKey(x.getTitle()))
                                 .collect(Collectors.toList());
+        /**
+         * Sort the unseen videos by their rating, using
+         * the database order if ratings are equal.
+         */
         videos = CustomSort.sortVideos(videos, videos.stream()
-                    .collect(Collectors.toMap(x -> x, x -> x.getAverageRating())), "db_desc");
+                    .collect(Collectors.toMap(x -> x, Video::getAverageRating)), "db_desc");
 
         Video targetVideo = videos.stream().findFirst().orElse(null);
 
@@ -100,34 +113,33 @@ public class Recommendation extends Action {
          */
         List<String> genres = new ArrayList<>();
         for (Video video : videos) {
-            for (String genre : video.getGenres()) {
-                if (!genres.contains(genre)) {
-                    genres.add(genre);
+            for (String currentGenre : video.getGenres()) {
+                if (!genres.contains(currentGenre)) {
+                    genres.add(currentGenre);
                 }
             }
         }
-
         /**
-         * In every genre bucket add a list of sorted videos by
-         * their number of views and position in the database.
+         * Every genre bucket will have a list of videos
+         * sorted by the position in the database (aka unsorted).
          */
         List<List<Video>> genreBuckets = new ArrayList<>();
-        for (String genre : genres) {
-            List<Video> filteredVideos = videos.stream().filter(x -> x.getGenres().contains(genre))
+        for (String currentGenre : genres) {
+            List<Video> filteredVideos = videos.stream()
+                                            .filter(x -> x.getGenres().contains(currentGenre))
                                             .collect(Collectors.toList());
-
             genreBuckets.add(filteredVideos);
         }
-
         /**
-         * Sort the genres by their popularity
+         * Sort the genres by their popularity, in descending order.
          */
         genreBuckets.sort(new Comparator<List<Video>>() {
             @Override
-            public int compare(List<Video> o1, List<Video> o2) {
-                return (-1) * Integer.compare(o1.stream().map(x -> Utils.viewsOfAVideo(x.getTitle()))
-                                .reduce(0, Integer::sum), o2.stream().map(x ->
-                                Utils.viewsOfAVideo(x.getTitle())).reduce(0, Integer::sum));
+            public int compare(final List<Video> o1, final List<Video> o2) {
+                return Integer.compare(o1.stream()
+                        .map(x -> Utils.viewsOfAVideo(x.getTitle())).reduce(0, Integer::sum),
+                        o2.stream().map(x -> Utils.viewsOfAVideo(x.getTitle()))
+                        .reduce(0, Integer::sum)) * (-1);
             }
         });
 
@@ -142,53 +154,70 @@ public class Recommendation extends Action {
         return "PopularRecommendation cannot be applied!";
     }
 
+    /**
+     * Finds the most popular video among favorites videos,
+     * which was not seen by the user.
+     */
     private String favorite() {
         Repository repo = Repository.getInstance();
         User user = repo.findUser(username);
 
-        if (user == null || !user.getSubscriptionType().equals(Constants.PREMIUM))
+        if (user == null || !user.getSubscriptionType().equals(Constants.PREMIUM)) {
             return "FavoriteRecommendation cannot be applied!";
+        }
 
         List<Video> videos = Stream.concat(repo.getMovies().stream(), repo.getSerials().stream())
                                 .collect(Collectors.toList());
-
-        List<Video> validVideos = videos.stream().filter(x -> (Utils.favoriteApparitions(x.getTitle()) != 0))
+        /**
+         * Remove the videos which nobody added to favorites.
+         */
+        List<Video> validVideos = videos.stream()
+                                    .filter(x -> (Utils.favoriteApparitions(x.getTitle()) != 0))
                                     .collect(Collectors.toList());
-        validVideos = CustomSort.sortVideos(validVideos, validVideos.stream().collect(Collectors
-                .toMap(x -> x, x -> (double) Utils.favoriteApparitions(x.getTitle()))), "db_desc");
+        /**
+         * Sort by the number of apparitions in favorites lists.
+         */
+        validVideos = CustomSort.sortVideos(validVideos, validVideos.stream()
+                        .collect(Collectors.toMap(x -> x,
+                        x -> (double) Utils.favoriteApparitions(x.getTitle()))), "db_desc");
 
-        Video targetVideo = validVideos.stream().filter(x -> !user.getHistory().containsKey(x.getTitle()))
+        Video targetVideo = validVideos.stream()
+                            .filter(x -> !user.getHistory().containsKey(x.getTitle()))
                             .findFirst().orElse(null);
 
         return (targetVideo == null) ? "FavoriteRecommendation cannot be applied!"
                                     : "FavoriteRecommendation result: " + targetVideo.getTitle();
     }
 
+    /**
+     * Get all the unwatched videos from a specific genre, sorted
+     * by their average rating.
+     */
     private String search() {
         Repository repo = Repository.getInstance();
         User user = repo.findUser(username);
 
-        if (user == null || !user.getSubscriptionType().equals(Constants.PREMIUM)) return "SearchRecommendation cannot be applied!";
+        if (user == null || !user.getSubscriptionType().equals(Constants.PREMIUM)) {
+            return "SearchRecommendation cannot be applied!";
+        }
 
         List<Video> videos = Stream.concat(repo.getMovies().stream(), repo.getSerials().stream())
                 .collect(Collectors.toList());
         List<Video> validVideos = videos.stream().filter(x -> x.getGenres().contains(genre))
                                     .collect(Collectors.toList());
-
         /**
          * Remove the seen videos
          */
         validVideos = validVideos.stream().filter(x -> !user.getHistory()
                         .containsKey(x.getTitle())).collect(Collectors.toList());
-
         /**
          * Sort the remaining videos
          */
         validVideos = CustomSort.sortVideos(validVideos, validVideos.stream()
-                        .collect(Collectors.toMap(x -> x, x -> x.getAverageRating())), Constants.ASC);
+                        .collect(Collectors.toMap(x -> x, Video::getAverageRating)), Constants.ASC);
 
         return (validVideos.size() == 0) ? "SearchRecommendation cannot be applied!"
-                    : "SearchRecommendation result: " + validVideos.stream().map(x -> x.getTitle())
+                    : "SearchRecommendation result: " + validVideos.stream().map(Video::getTitle)
                     .collect(Collectors.toList());
     }
 }

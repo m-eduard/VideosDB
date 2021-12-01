@@ -128,8 +128,10 @@ public final class Utils {
 
     /**
      * Finds how many favorite lists contain a show/movie.
+     * @param videoTitle name of the video
+     * @return number of favorites lists that have the specified video
      */
-    public static int favoriteApparitions(String videoTitle) {
+    public static int favoriteApparitions(final String videoTitle) {
         Repository repo = Repository.getInstance();
         return (int) repo.getUsers().stream().
                 filter(y -> y.getFavoriteMovies().contains(videoTitle)).count();
@@ -137,17 +139,21 @@ public final class Utils {
 
     /**
      * Get the total number of views for a video.
+     * @param videoTitle name of the video
+     * @return number of views as int
      */
-    public static int viewsOfAVideo(String videoTitle) {
+    public static int viewsOfAVideo(final String videoTitle) {
         Repository repo = Repository.getInstance();
         return repo.getUsers().stream().map(x -> x.getHistory()
                 .getOrDefault(videoTitle, 0)).reduce(0, Integer::sum);
     }
 
     /**
-     * Get the number of reviews provided by a user
+     * Get the number of reviews provided by a user.
+     * @param user User instance
+     * @return how many reviews a user provided
      */
-    public static int ratingsOfAUser(User user) {
+    public static int ratingsOfAUser(final User user) {
         return user.getRated().keySet().stream().map(x -> user.getRated().get(x).size())
                 .reduce(0, Integer::sum);
     }

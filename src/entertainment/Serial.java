@@ -1,9 +1,8 @@
 package entertainment;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class Serial extends Video {
+public final class Serial extends Video {
     private final int numberOfSeasons;
     private final ArrayList<Season> seasons;
 
@@ -24,16 +23,22 @@ public class Serial extends Video {
         return seasons;
     }
 
+    /**
+     * Compute the total average rating of a serial based
+     * on the ratings of its individual seasons.
+     */
     @Override
     public double getAverageRating() {
-        List<Double> ratings = new ArrayList<>();
-        seasons.forEach(x -> ratings.add(x.averageRating()));
-
-        return ratings.stream().reduce(0.0, (x, y) -> x + y) / ratings.size();
+        return seasons.stream().map(x -> x.averageRating())
+                .reduce(0.0, (x, y) -> x + y) / seasons.size();
     }
 
+    /**
+     * Returns total duration of a serial.
+     */
     @Override
     public int getDuration() {
-        return seasons.stream().map(x -> x.getDuration()).reduce(0, (x, y) -> x + y);
+        return seasons.stream().map(x -> x.getDuration())
+                .reduce(0, (x, y) -> x + y);
     }
 }
