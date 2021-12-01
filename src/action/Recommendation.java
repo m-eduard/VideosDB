@@ -116,9 +116,6 @@ public class Recommendation extends Action {
             List<Video> filteredVideos = videos.stream().filter(x -> x.getGenres().contains(genre))
                                             .collect(Collectors.toList());
 
-//            genreBuckets.add(CustomSort.sortVideos(filteredVideos, filteredVideos.stream().collect(Collectors
-//                                                    .toMap(x -> x, x -> (double) Utils.viewsOfAVideo(x.getTitle()))),
-//                                                    "db_desc"));
             genreBuckets.add(filteredVideos);
         }
 
@@ -134,17 +131,7 @@ public class Recommendation extends Action {
             }
         });
 
-        System.out.println("Start");
         for (List<Video> bucket : genreBuckets) {
-            System.out.println(bucket.stream().map(x -> Utils.viewsOfAVideo(x.getTitle()))
-                    .reduce(0, Integer::sum));
-
-            List<String> vv = bucket.stream().map(x -> x.getTitle()).collect(Collectors.toList());
-            List<Integer> vs = bucket.stream().map(x -> Utils.viewsOfAVideo(x.getTitle()))
-                                .collect(Collectors.toList());
-
-            System.out.println(vv + "\n" + vs);
-
             Video target = bucket.stream().filter(x -> !user.getHistory().containsKey(x.getTitle()))
                                 .findFirst().orElse(null);
             if (target != null) {
