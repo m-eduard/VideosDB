@@ -14,6 +14,7 @@ import user.User;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Singleton class which stores all the input data in
@@ -70,7 +71,6 @@ public final class Repository {
         if (instance == null) {
             instance = new Repository();
         }
-
         return instance;
     }
 
@@ -81,8 +81,28 @@ public final class Repository {
      * @param input input data
      * @return instance of the repository
      */
-    public static Repository load(final Input input) {
-        instance = new Repository(input);
+    public static Repository getInstance(final Input input) {
+        if (instance == null) {
+            instance = new Repository(input);
+        } else {
+            instance.actors = input.getActors().stream()
+                    .map(x -> new Actor(x.getName(), x.getCareerDescription(), x.getFilmography(),
+                            x.getAwards()))
+                    .collect(Collectors.toList());
+            instance.users = input.getUsers().stream()
+                    .map(x -> new User(x.getUsername(), x.getSubscriptionType(), x.getHistory(),
+                            x.getFavoriteMovies()))
+                    .collect(Collectors.toList());
+            instance.movies = input.getMovies().stream()
+                    .map(x -> new Movie(x.getTitle(), x.getCast(), x.getGenres(), x.getYear(),
+                            x.getDuration()))
+                    .collect(Collectors.toList());
+            instance.serials = input.getSerials().stream()
+                    .map(x -> new Serial(x.getTitle(), x.getCast(), x.getGenres(),
+                            x.getNumberSeason(), x.getSeasons(), x.getYear()))
+                    .collect(Collectors.toList());
+        }
+
         return instance;
     }
 

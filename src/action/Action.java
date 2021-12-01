@@ -10,7 +10,7 @@ public abstract class Action {
     /**
      * Handler for the operations that can be applied:
      * This method is overridden in every Action() subclass
-     * in order to apply the required operations on the movies
+     * in order to apply the required operations on the movies'
      * database (aka repository).
      * @return a custom message for every type of action
      */

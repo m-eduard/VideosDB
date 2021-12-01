@@ -18,6 +18,7 @@ public final class CustomFilter {
      * (by year/genre).
      * @param videos list of videos that will be filtered
      * @param filters list of filters that will be applied
+     * @return list of filtered videos
      */
     public static List<Video> filterVideos(final List<Video> videos,
                                            final List<List<String>> filters) {
@@ -44,7 +45,7 @@ public final class CustomFilter {
      * (by awards won/words that appear in their description).
      * @param actors list of actors that will be filtered
      * @param filters list of filters that will be applied
-     * @return
+     * @return list of filtered actors
      */
     public static List<Actor> filterActors(final List<Actor> actors,
                                            final List<List<String>> filters) {
@@ -59,6 +60,10 @@ public final class CustomFilter {
                                 .map(y -> ((x.getAwards().containsKey(y)) ? 1 : 0))
                                 .reduce(0, Integer::sum);
 
+                /**
+                 * If the actor has all the needed awards, then the number of the
+                 * awards found should be equal to the number of the requested awards.
+                 */
                 return awards == filters.get(Constants.AWARDS_POS).size();
             }).collect(Collectors.toList());
         }

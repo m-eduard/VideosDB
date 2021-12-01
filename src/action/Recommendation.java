@@ -44,6 +44,7 @@ public final class Recommendation extends Action {
 
     /**
      * Returns the first video which haven't been seen by the user.
+     * @return output message as String
      */
     private String standard() {
         Repository repo = Repository.getInstance();
@@ -65,6 +66,7 @@ public final class Recommendation extends Action {
 
     /**
      * Returns the best rated unseen video.
+     * @return output message as String
      */
     private String bestUnseen() {
         Repository repo = Repository.getInstance();
@@ -96,6 +98,7 @@ public final class Recommendation extends Action {
 
     /**
      * Returns the first unseen video from the most popular genre.
+     * @return output message as String
      */
     private String popular() {
         Repository repo = Repository.getInstance();
@@ -157,6 +160,7 @@ public final class Recommendation extends Action {
     /**
      * Finds the most popular video among favorites videos,
      * which was not seen by the user.
+     * @return output message as String
      */
     private String favorite() {
         Repository repo = Repository.getInstance();
@@ -192,6 +196,7 @@ public final class Recommendation extends Action {
     /**
      * Get all the unwatched videos from a specific genre, sorted
      * by their average rating.
+     * @return output message as String
      */
     private String search() {
         Repository repo = Repository.getInstance();

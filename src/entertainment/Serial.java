@@ -26,6 +26,7 @@ public final class Serial extends Video {
     /**
      * Compute the total average rating of a serial based
      * on the ratings of its individual seasons.
+     * @return average rating as double
      */
     @Override
     public double getAverageRating() {
@@ -34,7 +35,7 @@ public final class Serial extends Video {
     }
 
     /**
-     * Returns total duration of a serial.
+     * @return total duration of a serial as integer.
      */
     @Override
     public int getDuration() {

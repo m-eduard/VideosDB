@@ -18,7 +18,7 @@ import java.nio.file.Paths;
 import java.util.Objects;
 
 /**
- * The entry point to this homework. It runs the checker that tests your implentation.
+ * The entry point to this homework. It runs the checker that tests your implementation.
  */
 public final class Main {
     /**
@@ -72,8 +72,8 @@ public final class Main {
         Writer fileWriter = new Writer(filePath2);
         JSONArray arrayResult = new JSONArray();
 
-        //TODO add here the entry point to your implementation
-        Repository repo = Repository.load(input);
+        // Entry point to the implementation
+        Repository.getInstance(input);
         ActionCenter actions = new ActionCenter(input.getCommands());
         actions.applyActions(fileWriter, arrayResult);
 

@@ -67,8 +67,9 @@ public final class Query extends Action {
     }
 
     /**
-     * Returns the first N actors sorted in the specified order
+     * Finds the first N actors sorted in the specified order
      * after their average rating.
+     * @return output message as String
      */
     private String averageActor() {
         Repository repo = Repository.getInstance();
@@ -103,8 +104,9 @@ public final class Query extends Action {
     }
 
     /**
-     * Returns the first N actors that won every requested award,
+     * Finds the first N actors that won every requested award,
      * sorted in the specified order after their total number of awards.
+     * @return output message as String
      */
     private String awardsActor() {
         List<Actor> actors = retrieveTargetObjects(objectType).stream().map(x -> (Actor) x)
@@ -129,8 +131,9 @@ public final class Query extends Action {
     }
 
     /**
-     * Returns the first N actors which has a description that contains the given words,
-     * in the exact same order as in the database (aka repository).
+     * Finds the first N actors which has a description that contains the given words,
+     * as they appear in the Repository.
+     * @return output message as String
      */
     private String keywordsActor() {
         List<Actor> actors = retrieveTargetObjects(objectType).stream().map(x -> (Actor) x)
@@ -156,7 +159,8 @@ public final class Query extends Action {
     }
 
     /**
-     * Returns the first N videos sorted by their average rating.
+     * Gets the first N videos sorted by their average rating.
+     * @return output message as String
      */
     private String ratingsVideos() {
         List<Video> videos = retrieveTargetObjects(objectType).stream().map(x -> (Video) x)
@@ -183,7 +187,8 @@ public final class Query extends Action {
     }
 
     /**
-     * Returns the first N videos sorted by their popularity in favorites lists.
+     * Searches the first N videos sorted by their popularity in favorites lists.
+     * @return output message as String
      */
     private String favoritesVideos() {
         List<Video> videos = retrieveTargetObjects(objectType).stream()
@@ -206,7 +211,8 @@ public final class Query extends Action {
     }
 
     /**
-     * Returns the first N videos sorted by their length.
+     * Finds the first N videos sorted by their length.
+     * @return output message as String
      */
     private String longestVideos() {
         List<Video> videos = retrieveTargetObjects(objectType).stream()
@@ -214,8 +220,8 @@ public final class Query extends Action {
 
         List<Video> validVideos = CustomFilter.filterVideos(videos, filters);
         /**
-         * As the second parameter of sortVideos(), the validVideos are
-         * mapped to their total length.
+         * As the second parameter for sortVideos(), a map is created by
+         * mapping the validVideos to their total length.
          */
         validVideos = CustomSort.sortVideos(validVideos, validVideos.stream().collect(Collectors
                      .toMap(x -> x, x -> (double) x.getDuration())), sortType);
@@ -225,7 +231,8 @@ public final class Query extends Action {
     }
 
     /**
-     * Returns the first N videos sorted by the number of views.
+     * Finds the first N videos sorted by the number of views.
+     * @return output message as String
      */
     private String mostViewedVideos() {
         List<Video> videos = retrieveTargetObjects(objectType).stream()
@@ -246,7 +253,8 @@ public final class Query extends Action {
     }
 
     /**
-     * Returns the most active users.
+     * Finds the most active users.
+     * @return output message as String
      */
     private String ratingsUsers() {
         List<User> users = retrieveTargetObjects(objectType).stream().map(x -> (User) x)
@@ -269,7 +277,6 @@ public final class Query extends Action {
      * database. (the elements of the returned list have a generic Object type, and
      * a downcast to their original type will be performed in the function that
      * called this method).
-     *
      * @param targetType type of objects gathered from database
      *                   (i.e.: "actors", "users", ...); in this case is
      *                   equal to objectType from the current instance

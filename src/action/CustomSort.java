@@ -22,7 +22,7 @@ public final class CustomSort {
      *                   a value that represents the most important sorting criteria
      * @param sortType how the list will be sorted
      *                 (increasing order / decreasing / respecting the database order)
-     * @return sorted list
+     * @return sorted list of videos
      */
     public static List<Video> sortVideos(final List<Video> videos,
                                          final Map<Video, Double> properties,
@@ -92,9 +92,9 @@ public final class CustomSort {
      * Sort a list of videos by their properties in the requested order.
      * @param users list of users
      * @param properties properties map where every element from @users is mapped to
-     *      *                   a value that represents the most important sorting criteria
+     *                   a value that represents the most important sorting criteria
      * @param sortType order in which the list will be sorted
-     * @return sorted list
+     * @return sorted list of users
      */
     public static List<User> sortUsers(final List<User> users, final Map<User, Double> properties,
                                        final String sortType) {
@@ -137,6 +137,7 @@ public final class CustomSort {
      * stored as value in the @properties.
      * @param actors list of actors
      * @param properties properties for every actor
+     * @param sortType order in which the list will be sorted
      * @return a list of sorted actors
      */
     public static List<Actor> sortActors(final List<Actor> actors,

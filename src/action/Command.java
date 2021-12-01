@@ -44,9 +44,9 @@ public final class Command extends Action {
     }
 
     /**
-     * Apply a command(e.g.: view, add to favorites, rate)
+     * Applies a command(e.g.: view, add to favorites, rate)
      * on the database.
-     * @return command output
+     * @return command output as String
      */
     @Override
     public String apply() {
@@ -60,10 +60,15 @@ public final class Command extends Action {
 
     /**
      * Adds a video inside the favorites list of a user.
+     * @return command output as String
      */
     private String favorite() {
         Repository repo = Repository.getInstance();
         User user = repo.findUser(username);
+
+        if (user == null) {
+            return "error -> " + username + "is not a valid user";
+        }
 
         if (user.getHistory().containsKey(title)) {
             if (!user.getFavoriteMovies().contains(title)) {
@@ -77,10 +82,15 @@ public final class Command extends Action {
 
     /**
      * Adds a video to the history for a user.
+     * @return command output
      */
     private String view() {
         Repository repo = Repository.getInstance();
         User user = repo.findUser(username);
+
+        if (user == null) {
+            return "error -> " + username + "is not a valid user";
+        }
 
         user.getHistory().put(title, user.getHistory().getOrDefault(title, 0) + 1);
 
@@ -90,10 +100,15 @@ public final class Command extends Action {
 
     /**
      * Rates a video on behalf of the current user.
+     * @return command output as String
      */
     private String rating() {
         Repository repo = Repository.getInstance();
         User user = repo.findUser(username);
+
+        if (user == null) {
+            return "error -> " + username + "is not a valid user";
+        }
 
         if (user.getHistory().containsKey(title)) {
             if (user.getRated().containsKey(title)) {
